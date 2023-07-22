@@ -137,11 +137,11 @@
 
 <body>
     <div class="header">
-        <a href="index.html" class="btn btn-primary me-2">Accueil</a>
-        <button class="btn btn-primary me-2" onclick="openAbout()">Mon Github</button>
-        <a href="othertools.html" class="btn btn-primary me-2">D'autres Outils Lunii</a>
-        <a href="tutolunii.html" class="btn btn-primary me-2">Ajouter un pack</a>
-        <button class="btn btn-primary me-2" onclick="toggleSettings()">Paramètres</button>
+        <a href="index.html" class="btn btn-primary me-2">😋 Accueil</a>
+        <button class="btn btn-primary me-2" onclick="openAbout()">📌 Mon Github</button>
+        <a href="othertools.html" class="btn btn-primary me-2">🛠️ D'autres Outils Lunii</a>
+        <a href="tutolunii.html" class="btn btn-primary me-2">✅ Ajouter un pack</a>
+        <button class="btn btn-primary me-2" onclick="toggleSettings()">⚙️ Paramètres</button>
     </div>
 
     <div id="notificationContainer" class="position-fixed top-0 end-0 p-3">
@@ -154,30 +154,30 @@
     <div class="container mt-5">
         <div class="title">Bienvenue au Générateur de nom de pack Lunii</div>
         <div class="mb-3">
-            <label for="age" class="form-label label">Entrez l'âge minimum de votre histoire :</label>
+            <label for="age" class="form-label label">😶 Entrez l'âge minimum de votre histoire :</label>
             <input type="text" class="form-control input" id="age" oninput="this.value = this.value.replace(/\D/g, ''); updatePreview()">
         </div>
         <div class="mb-3">
-            <label for="titre" class="form-label label">Entrez le titre :</label>
+            <label for="titre" class="form-label label">💬 Entrez le titre :</label>
             <input type="text" class="form-control input" id="titre" oninput="updatePreview()">
         </div>
         <div class="mb-3">
-            <label for="auteur" class="form-label label">Entrez le nom de l'auteur :</label>
+            <label for="auteur" class="form-label label">✒️ Entrez le nom de l'auteur :</label>
             <input type="text" class="form-control input" id="auteur" oninput="updatePreview()">
         </div>
         <div class="mb-3">
-            <label for="bonus" class="form-label label">Entrez le nombre d'histoires dans votre pack :</label>
+            <label for="bonus" class="form-label label">📖 Entrez le nombre d'histoires dans votre pack :</label>
             <input type="text" class="form-control input" id="bonus" oninput="updatePreview()">
         </div>
         <div class="mb-3">
-            <label for="version" class="form-label label">Entrez la version de votre pack :</label>
+            <label for="version" class="form-label label">✨ Entrez la version de votre pack :</label>
             <input type="text" class="form-control input" id="version" oninput="this.value = this.value.replace(/\D/g, ''); updatePreview()">
         </div>
         <div class="form-check extension-label">
             <input type="checkbox" class="form-check-input" id="addExtension" onclick="updatePreview()">
-            <label class="form-check-label" for="addExtension">Ajouter l'extension .zip</label>
+            <label class="form-check-label" for="addExtension">📦 Ajouter l'extension .zip</label>
         </div>
-        <button class="btn btn-primary button" onclick="generatePackName()">Copier le nom du pack</button>
+        <button class="btn btn-primary button" onclick="generatePackName()">💾 Copier le nom du pack</button>
         <div class="clipboard-label alert" id="clipboardLabel" role="alert" style="display: none;"></div>
         
         <div class="file-preview mt-3" id="filePreview"></div>
@@ -293,7 +293,7 @@
                     // Afficher la notification d'erreur
                     showNotification("L'âge minimum ne peut pas être supérieur à 9. Veuillez contacter un administrateur si nécessaire.", "danger");
                 } else {
-                    let result = `${age}+]${titre}_(${bonus}_episodes)[by_${auteur}_V${version}]`;
+                    let result = `${age}+]${titre}_(${bonus}_histoires)[by_${auteur}_V${version}]`;
                     if (addExtension) {
                         result += ".zip";
                     }
@@ -347,7 +347,7 @@
                 result += `${titre}`;
             }
             if (bonus) {
-                result += `(${bonus}_episodes)`;
+                result += `(${bonus}_histoires)`;
             }
             if (auteur) {
                 result += `[by_${auteur}`;
