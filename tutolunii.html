@@ -13,6 +13,12 @@
             padding: 0;
         }
 
+        .header {
+            background-color: #94c9db;
+            padding: 10px;
+            text-align: right;
+        }
+
         .container {
             max-width: 800px;
             margin: 100px auto;
@@ -67,6 +73,15 @@
     </style>
 </head>
 <body>
+
+    <div class="header">
+        <button class="btn btn-primary me-2" onclick="openAbout()">Mon Github</button>
+        <a href="othertools.html" class="btn btn-primary me-2">D'autres Outils Lunii</a>
+        <a href="tutolunii.html" class="btn btn-primary me-2">Ajouter un pack</a>
+        <button class="btn btn-primary me-2" onclick="toggleSettings()">Paramètres</button>
+    </div>
+
+
     <div class="container">
         <div class="step-container active">
             <h1 class="title">Étape 1</h1>
@@ -142,6 +157,53 @@
                                                  <div class="description">Le tutoriel est terminé ! Nous allons examiner ton pack et nous le publierons le plus vite possible ! Merci pour ta contribution :)</div>`;
                 document.querySelector('.container').appendChild(congratulationsText);
         }
+
+        function toggleSettings() {
+                const settingsContainer = document.getElementById('settingsContainer');
+                isSettingsOpen = !isSettingsOpen;
+                settingsContainer.style.display = isSettingsOpen ? "block" : "none";
+            }
+
+        /* Fonction pour initialiser les paramètres depuis le Web Storage */
+        function initSettings() {
+            const updatePreference = localStorage.getItem("updatePreference");
+            if (updatePreference !== null) {
+                const updateSwitch = document.getElementById("updateSwitch");
+                updateSwitch.checked = updatePreference === "true";
+            }
+        }
+
+        function toggleSettingsContainer() {
+            const settingsContainer = document.querySelector(".settings-container");
+            if (settingsContainer.style.display === "none") {
+                settingsContainer.style.display = "block";
+            } else {
+                settingsContainer.style.display = "none";
+            }
+        }
+
+        function checkGithubRelease() {
+            const currentVersion = "2.0.0";
+            const repoUrl = "https://api.github.com/repos/LuckyTheCookie/lunii_name_generator/releases";
+            fetch(repoUrl)
+                .then(response => response.json())
+                .then(releasesInfo => {
+                    const latestVersion = releasesInfo[0].tag_name;
+                    if (latestVersion > currentVersion) {
+                        const userResponse = confirm(`Une nouvelle version (${latestVersion}) est disponible sur GitHub ! Voulez-vous la télécharger maintenant ?`);
+                        if (userResponse) {
+                            const downloadLink = releasesInfo[0].html_url;
+                            window.open(downloadLink, "_blank");
+                        }
+                    } else {
+                        console.log("Vous utilisez la dernière version de l'application.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la requête vers l'API GitHub:", error);
+                });
+        }
+
     </script>
 </body>
 </html>
