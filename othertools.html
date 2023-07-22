@@ -67,6 +67,40 @@
             opacity: 0.7;
         }
 
+        .settings-container {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            background-color: #f0f5f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .settings-container .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+
+        .settings-container h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .switch-label {
+            margin-left: 10px;
+        }
+
+
 
         @keyframes fadeIn {
             from {
@@ -102,9 +136,38 @@
                 </div>
                 <div class="text-center mt-3">
                 <a href="https://github.com/Cyri1/bah/releases" class="btn btn-primary">Découvrir</a>
-                </div>
             </div>
+        </div>
+
+        <div class="settings-container" id="settingsContainer">
+            <span class="close-button" onclick="toggleSettings()">&times;</span>
+            <h3>Paramètres</h3>
+            <div class="switch-container mb-3">
+                <input type="checkbox" class="form-check-input" id="updateSwitch" onclick="toggleUpdatePreference()" checked>
+                <label class="form-check-label switch-label" for="updateSwitch">Activer la recherche de mises à jour au démarrage de l'application</label>
+            </div>
+        </div>
+
+
+            
     <script>
+
+        // Nouvelle variable pour garder une trace de l'état du conteneur des paramètres
+        let isSettingsOpen = false;
+
+
+        /* Fonction pour activer ou désactiver la recherche de mises à jour */
+        function toggleUpdatePreference() {
+            const updateSwitch = document.getElementById("updateSwitch");
+            const updatePreference = updateSwitch.checked;
+            localStorage.setItem("updatePreference", updatePreference);
+            alert(`La recherche de mises à jour au démarrage de l'application est maintenant ${updatePreference ? "activée" : "désactivée"}.`);
+
+            if (updatePreference) {
+                checkGithubRelease();
+            }
+        }
+
 
         function toggleSettings() {
                 const settingsContainer = document.getElementById('settingsContainer');
