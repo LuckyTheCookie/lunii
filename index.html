@@ -216,13 +216,6 @@
         // Nouvelle variable pour garder une trace de l'état du conteneur des paramètres
         let isSettingsOpen = false;
 
-        document.addEventListener("DOMContentLoaded", () => {
-            initSettings(); // Initialiser les paramètres depuis le Web Storage
-            updateAuthButton(); // Mettre à jour le texte du bouton et afficher/masquer l'image
-            handleAuthorization(); // Gérer l'autorisation si l'utilisateur est déjà connecté
-            displayUserProfile();
-        });
-
         function updateAuthButton() {
             const authButton = document.getElementById('authButton');
             const profileImage = document.getElementById('profileImage');
@@ -494,17 +487,23 @@
         profileImage.src = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`;
     }
 
-    // Fonction pour gérer la récupération des informations de profil après l'autorisation
     function handleAuthorization() {
         const accessToken = getAccessTokenFromURL();
         if (accessToken) {
+            isLoggedIn = true; // Met à jour la variable d'état de connexion réel
+            updateAuthButton(); // Mettre à jour le texte du bouton de connexion/déconnexion
             getUserProfile(accessToken)
                 .then(displayUserProfile)
                 .catch(error => console.error("Erreur lors de la récupération du profil :", error));
         }
     }
 
-
+    document.addEventListener("DOMContentLoaded", () => {
+            initSettings(); // Initialiser les paramètres depuis le Web Storage
+            updateAuthButton(); // Mettre à jour le texte du bouton et afficher/masquer l'image
+            handleAuthorization(); // Gérer l'autorisation si l'utilisateur est déjà connecté
+            displayUserProfile();
+        });
 
     </script>
 </body>
