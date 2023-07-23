@@ -18,6 +18,13 @@
             background-color: #94c9db;
             padding: 10px;
             text-align: right;
+            align-items: center;
+            justify-content: flex-end;
+            display: flex;
+        }
+
+        #profileImage {
+            margin-left: auto; /* Cette ligne aligne l'image à droite */
         }
 
         .container {
@@ -137,6 +144,8 @@
 
 <body>
     <div class="header">
+        <img id="profileImage" src="" alt="Photo de profil de l'utilisateur" width="70" height="70">
+        <button class="btn btn-primary me-2" id=authButton onclick="toggleAuth()">Se connecter</button>
         <a href="index.html" class="btn btn-primary me-2">😋 Accueil</a>
         <button class="btn btn-primary me-2" onclick="openAbout()">📌 Mon Github</button>
         <a href="othertools.html" class="btn btn-primary me-2">🛠️ D'autres Outils Lunii</a>
@@ -202,6 +211,49 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
         
+        let isLoggedIn = false; // Variable pour suivre l'état de connexion réel
+
+        // Nouvelle variable pour garder une trace de l'état du conteneur des paramètres
+        let isSettingsOpen = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initSettings(); // Initialiser les paramètres depuis le Web Storage
+            updateAuthButton(); // Mettre à jour le texte du bouton et afficher/masquer l'image
+            handleAuthorization(); // Gérer l'autorisation si l'utilisateur est déjà connecté
+        });
+
+        function updateAuthButton() {
+            const authButton = document.getElementById('authButton');
+            const profileImage = document.getElementById('profileImage');
+
+            if (isLoggedIn) {
+            // L'utilisateur est connecté, modifier le texte du bouton
+            authButton.textContent = "Se déconnecter";
+            profileImage.style.display = "block";
+            } else {
+            // L'utilisateur n'est pas connecté, modifier le texte du bouton
+            authButton.textContent = "Se connecter";
+            profileImage.style.display = "none";
+            }
+        }
+
+        function toggleAuth() {
+            if (isLoggedIn) {
+            // L'utilisateur est actuellement connecté, donc on le déconnecte
+            isLoggedIn = false;
+            localStorage.removeItem("access_token"); // Supprime le jeton d'accès du local storage
+            isLoggedIn = false; // Met à jour la variable d'état de connexion réel
+            updateAuthButton(); // Met à jour le texte du bouton de connexion/déconnexion
+            } else {
+            // L'utilisateur n'est pas actuellement connecté, donc on le connecte
+            isLoggedIn = true;
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=1132660837883052123&redirect_uri=https://luckythecookie.github.io/lunii&response_type=token&scope=identify";
+            }
+
+            updateAuthButton(); // Mettre à jour le texte du bouton après avoir changé l'état de connexion
+        }
+
+
         function showBonusMessage(fieldName) {
             const messages = {
                 auteur: "✨ Quel magnifique pseudo !",
@@ -245,8 +297,7 @@
         }
 
 
-        // Nouvelle variable pour garder une trace de l'état du conteneur des paramètres
-        let isSettingsOpen = false;
+        
 
 
         /* Fonction pour activer ou désactiver la recherche de mises à jour */
@@ -416,6 +467,43 @@
             isSettingsOpen = !isSettingsOpen;
             settingsContainer.style.display = isSettingsOpen ? "block" : "none";
         }
+
+        // Fonction pour extraire le jeton d'accès de l'URL
+        function getAccessTokenFromURL() {
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        return params.get("access_token");
+    }
+
+    // Fonction pour récupérer les informations de profil de l'utilisateur à partir de l'API de Discord
+    async function getUserProfile(accessToken) {
+        const response = await fetch("https://discord.com/api/v9/users/@me", {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+        return await response.json();
+    }
+
+    // Fonction pour afficher les informations de profil de l'utilisateur
+    function displayUserProfile(profile) {
+        const profileNameInput = document.getElementById("auteur");
+        const profileImage = document.getElementById("profileImage");
+
+        profileNameInput.value = profile.username;
+        profileImage.src = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`;
+    }
+
+    // Fonction pour gérer la récupération des informations de profil après l'autorisation
+    function handleAuthorization() {
+        const accessToken = getAccessTokenFromURL();
+        if (accessToken) {
+            getUserProfile(accessToken)
+                .then(displayUserProfile)
+                .catch(error => console.error("Erreur lors de la récupération du profil :", error));
+        }
+    }
+
+
 
     </script>
 </body>
