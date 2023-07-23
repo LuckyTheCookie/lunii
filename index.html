@@ -173,7 +173,8 @@
         </div>
         <div class="mb-3">
             <label for="auteur" class="form-label label">✒️ Entrez le nom du créateur du pack :</label>
-            <input type="text" class="form-control input" id="auteur" oninput="updatePreview(); showBonusMessage('auteur')" placeholder="Lucky_Kika">
+            <div id="auteurBonusMessage" class="text-muted small">Cette case est pré-remplie car vous avez autorisé l'intégration avec Discord.</div>
+            <input type="text" class="form-control input" id="auteur" oninput="updatePreview(); showBonusMessage('auteur')" placeholder="Lucky_Kika" disabled>
             <div id="auteurBonusMessage" class="text-muted small"></div>
         </div>
         <div class="mb-3">
@@ -219,15 +220,20 @@
         function updateAuthButton() {
             const authButton = document.getElementById('authButton');
             const profileImage = document.getElementById('profileImage');
+            const creatorPackInput = document.getElementById('auteur');
+            const creatorPackMessage = document.getElementById('auteurBonusMessage');
 
             if (isLoggedIn) {
-            // L'utilisateur est connecté, modifier le texte du bouton
-            authButton.textContent = "Se déconnecter";
-            profileImage.style.display = "block";
+                // L'utilisateur est connecté, modifier le texte du bouton
+                authButton.textContent = "Se déconnecter";
+                profileImage.style.display = "block";
+                creatorPackInput.disabled = true; // Désactive la saisie de l'utilisateur
+                creatorPackMessage.style.display = "block"; // Affiche le message pré-rempli
             } else {
-            // L'utilisateur n'est pas connecté, modifier le texte du bouton
-            authButton.textContent = "Se connecter";
-            profileImage.style.display = "none";
+                authButton.textContent = "Se connecter";
+                profileImage.style.display = "none";
+                creatorPackInput.disabled = false; // Active la saisie de l'utilisateur
+                creatorPackMessage.style.display = "none"; // Masque le message pré-rempli
             }
         }
 
