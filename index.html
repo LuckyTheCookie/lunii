@@ -229,6 +229,7 @@
                 profileImage.style.display = "block";
                 creatorPackInput.disabled = true; // Désactive la saisie de l'utilisateur
                 creatorPackMessage.style.display = "block"; // Affiche le message pré-rempli
+                showBonusMessage('auteur') // On affiche le message bonus parce qu'on ne peut pas écrire dans l'input
             } else {
                 authButton.textContent = "Se connecter";
                 profileImage.style.display = "none";
