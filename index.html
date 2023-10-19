@@ -191,7 +191,7 @@
             <input type="checkbox" class="form-check-input" id="addExtension" onclick="updatePreview()">
             <label class="form-check-label" for="addExtension">📦 Ajouter l'extension .zip</label>
         </div>
-        <button class="btn btn-primary button" onclick="generatePackName()">💾 Copier le nom du pack</button>
+        <button class="btn btn-primary button relative" onclick="generatePackName()" id="copyButton">💾 Copier le nom du pack</button>
         <div class="clipboard-label alert" id="clipboardLabel" role="alert" style="display: none;"></div>
         
         <div class="file-preview mt-3" id="filePreview"></div>
@@ -216,6 +216,18 @@
 
         // Nouvelle variable pour garder une trace de l'état du conteneur des paramètres
         let isSettingsOpen = false;
+
+        function showCheckmark() {
+        const checkmark = document.getElementById("checkmark");
+        const copyButton = document.getElementById("copyButton");
+
+        copyButton.textContent = "✅ Copié !";
+
+        setTimeout(() => {
+            copyButton.textContent = "💾 Copier le nom du pack";
+        }, 2500);
+    }
+
 
         function updateAuthButton() {
             const authButton = document.getElementById('authButton');
@@ -400,6 +412,7 @@
                     navigator.clipboard.writeText(result).then(() => {
                         // Afficher la notification de succès
                         showNotification("Le nom du pack a été copié dans votre presse-papier !", "success");
+                        showCheckmark();
                     });
                 }
             }
